@@ -83,44 +83,58 @@ __END__
 
 =head1 NAME
 
-Data::Polipo - Perl extension for Polipo cache file
+Data::Polipo - Perl extension for Polipo cache files
 
 =head1 SYNOPSIS
 
   use Data::Polipo;
-  my $p = new Data::Polipo ("t/o3kvmCJ-O2CcW2TH2KebbA==");
-  $p->status;			# Return status
+  
+  my $p = new Data::Polipo ("o3kvmCJ-O2CcW2TH2KebbA=="); # Constructor
+  $p->status;			# HTTP status
   $p->()->content_type;		# Content-Type
-  my $fh = $p->open;		# File handle
+  $p->()->x_polipo_location	# Original URL
+  my $fh = $p->open;		# Get file handle to read content
+  my $content = <$fh>;		# Read data from cache file
 
 =head1 DESCRIPTION
 
-Stub documentation for Data::Polipo, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
-
-Blah blah blah.
+Data::Polipo is a module which allows you to get HTTP header and
+content data from Polipo's cache file.
 
 =head2 EXPORT
 
 None by default.
 
+=head2 METHODS
+
+=over 4
+
+=item new Data::Polipo (FILENAME)
+
+Reads data from Polipo cache file and returns a Data::Polipo object.
+
+=item $p->status
+
+Returns HTTP return status (like "HTTP/1.1 200 OK").
+
+=item $p->open
+
+Returns an IO::File object to read the content data.
+
+=back
+
+=head2 HTTP HEADER
 
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
+Polipo
 
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+IO::File
 
 =head1 AUTHOR
 
-Toru Hisai, E<lt>toru@localE<gt>
+Toru Hisai, E<lt>toru@torus.jpE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
