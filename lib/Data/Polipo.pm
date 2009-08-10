@@ -4,6 +4,8 @@ use 5.008009;
 use strict;
 use warnings;
 
+use IO::File;
+
 require Exporter;
 
 our @ISA = qw(Exporter);
@@ -30,12 +32,50 @@ our $VERSION = '0.01';
 
 # Preloaded methods go here.
 
+our $count = 0;
 
+sub new {
+    my ($class, $file) = @_;
+    my $h = {};
 
+    my $fh = new IO::File $file, "r" or die "$file: $!";
+    local $/ = "\r\n";
+    my $res = <$fh>;
+    chomp $res;
 
+    my $ns = $class . "::" . $count ++;
 
+    while (my $line = <$fh>) {
+	chomp $line;
+	last if ($line =~ /^$/);
 
+	my ($k, $v) = $line =~ /([^:]+):\s*(.*)/;
+	warn $line and next unless ($k);
+	$k =~ s/-/_/g;
+	$k =~ s/^(.+)$/\L$1\E/;
+	if (! defined $h->{$k}) {
+	    $h->{$k} = $v;
+	    no strict 'refs';
+	    *{$ns . "::" . $k} = (sub {my $v=shift; sub {$v}})->($v);
+	}
+    }
 
+    if (my $offset = $h->{x_polipo_body_offset}) {
+	$fh->seek ($offset, SEEK_SET);
+    }
+
+    my $d = bless {} => $ns;
+    my $obj = sub {wantarray ? ($fh, $res) : $d};
+    bless $obj => $class;
+}
+
+sub open {
+    return ($_[0]->())[0];
+}
+
+sub status {
+    return ($_[0]->())[1];
+}
 
 1;
 __END__
@@ -43,12 +83,15 @@ __END__
 
 =head1 NAME
 
-Data::Polipo - Perl extension for blah blah blah
+Data::Polipo - Perl extension for Polipo cache file
 
 =head1 SYNOPSIS
 
   use Data::Polipo;
-  blah blah blah
+  my $p = new Data::Polipo ("t/o3kvmCJ-O2CcW2TH2KebbA==");
+  $p->status;			# Return status
+  $p->()->content_type;		# Content-Type
+  my $fh = $p->open;		# File handle
 
 =head1 DESCRIPTION
 
