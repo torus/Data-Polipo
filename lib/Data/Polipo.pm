@@ -93,10 +93,12 @@ Data::Polipo - Perl extension for Polipo cache files
 
   use Data::Polipo;
   
-  my $p = new Data::Polipo ("o3kvmCJ-O2CcW2TH2KebbA=="); # Constructor
+  my $p = new Data::Polipo ("o3kvmCJ-O2CcW2TH2KebbA==");
+  
   $p->status;			# HTTP status
-  $p->()->content_type;		# Content-Type
-  $p->()->x_polipo_location	# Original URL
+  $p->header->content_type;	# Content-Type
+  $p->header->x_polipo_location; # Polipo-specific header
+  
   my $fh = $p->open;		# Get file handle to read content
   my $content = <$fh>;		# Read data from cache file
 
@@ -115,11 +117,11 @@ None by default.
 
 =item new Data::Polipo (FILENAME)
 
-Reads data from Polipo cache file and returns a Data::Polipo object.
+Open a cache file and returns a Data::Polipo object.
 
 =item $p->status
 
-Returns HTTP return status (like "HTTP/1.1 200 OK").
+Returns the HTTP return status (like "HTTP/1.1 200 OK").
 
 =item $p->open
 
@@ -131,7 +133,7 @@ Returns an IO::File object to read the content data.
 
  $p->header->field_name
 
-returns header value of "Filed-Name".  field_name must be lower-cased
+returns header value of "Field-Name".  field_name must be lower-cased
 and replaced "-" with "_".  E.g. to get Content-Type header value,
 call like this:
 
@@ -139,8 +141,7 @@ call like this:
 
 =head1 SEE ALSO
 
-Polipo
-
+Polipo L<http://www.pps.jussieu.fr/~jch/software/polipo/>,
 IO::File
 
 =head1 AUTHOR
