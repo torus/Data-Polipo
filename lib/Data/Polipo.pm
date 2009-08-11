@@ -129,6 +129,13 @@ Returns an IO::File object to read the content data.
 
 =head2 HTTP HEADER
 
+ $p->header->field_name
+
+returns header value of "Filed-Name".  field_name must be lower-cased
+and replaced "-" with "_".  E.g. to get Content-Type header value,
+call like this:
+
+ $p->header->content_type
 
 =head1 SEE ALSO
 
