@@ -9,5 +9,5 @@ WriteMakefile(
     LICENSE           => 'perl',
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Data/Polipo.pm', # retrieve abstract from module
-       AUTHOR         => 'Toru Hisai <toru@local>') : ()),
+       AUTHOR         => 'Toru Hisai <toru@torus.jp>') : ()),
 );
