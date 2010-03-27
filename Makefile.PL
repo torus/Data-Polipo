@@ -6,6 +6,7 @@ WriteMakefile(
     NAME              => 'Data::Polipo',
     VERSION_FROM      => 'lib/Data/Polipo.pm', # finds $VERSION
     PREREQ_PM         => {}, # e.g., Module::Name => 1.1
+    LICENSE           => 'perl',
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Data/Polipo.pm', # retrieve abstract from module
        AUTHOR         => 'Toru Hisai <toru@local>') : ()),
