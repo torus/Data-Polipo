@@ -39,6 +39,7 @@ sub new {
     my $h = {};
 
     my $fh = new IO::File $file, "r" or die "$file: $!";
+    $fh->binmode;
     local $/ = "\r\n";
     my $res = <$fh>;
     chomp $res;
